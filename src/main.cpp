@@ -51,14 +51,16 @@ int main()
     uint32_t search_id;
     cin >> hex >> search_id;
     cout << "Search ID = " << search_id << '\n';
-  uint32_t count_id =  countFramesByID(frames, search_id);
-  printFramesByID(frames, search_id);
-  cout<<count_id<<endl;
+    uint32_t count_id = countFramesByID(frames, search_id);
+    printFramesByID(frames, search_id);
+    cout << count_id << endl;
 
-  uint8_t search_dlc;
-  cin>>dec>>search_dlc;
-  uint32_t count_dlc = countFramesByDLC(frames, search_dlc);
-  cout<<count_dlc<<endl;
+    uint8_t search_dlc;
+    cin >> dec >> search_dlc;
+    uint32_t count_dlc = countFramesByDLC(frames, search_dlc);
+    cout << count_dlc << endl;
 
-
+    printIDStatistics(frames);
+    printMostFrequentID(frames);
+    sortbyCount(frames);
 }
