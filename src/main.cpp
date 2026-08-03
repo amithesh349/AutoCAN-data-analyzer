@@ -1,66 +1,154 @@
 #include <iostream>
 #include "CANframe.hpp"
-#include <fstream>
-#include <string>
-#include <sstream>
 #include <vector>
+
 using namespace std;
+
 int main()
 {
-    ifstream file("../sample_data/can_log.txt");
     vector<CANFrame> frames;
-    if (!file.is_open())
+    importFrames(frames);
+
+    int choice;
+
+    do
     {
-        cout << "Cannot open file\n";
-        return 1;
-    }
+        cout << "\n========== AutoCAN Analyzer ==========\n";
+        cout << "1. Print All Frames\n";
+        cout << "2. Search by ID\n";
+        cout << "3. Count Frames by DLC\n";
+        cout << "4. Print ID Statistics\n";
+        cout << "5. Most Frequent ID\n";
+        cout << "6. Sort by Count\n";
+        cout << "7. Find Duplicate Frames\n";
+        cout << "8. Search by Data Byte\n";
+        cout << "9. Search by ID Range\n";
+        cout << "10. Search by DLC Range\n";
+        cout << "11. Sort Frames by ID\n";
+        cout << "12. Sort Frames by DLC\n";
+        cout << "13. Print Summary\n";
+        cout << "14. Export Frames\n";
+        cout << "15. Exit\n";
 
-    string line;
+        cout << "\nEnter your choice: ";
+        cin >> choice;
 
-    while (std::getline(file, line))
-    {
-        stringstream ss(line);
-
-        uint32_t id;
-        uint32_t dlc;
-
-        ss >> hex >> id;
-        ss >> dec >> dlc;
-
-        CANFrame frame(id, dlc);
-
-        cout << "ID  : " << hex << id << endl;
-        cout << "DLC : " << dec << dlc << endl;
-
-        cout << "Data: ";
-
-        string byte;
-        int index = 0;
-        while (ss >> byte)
+        switch (choice)
         {
-            int value = stoi(byte, nullptr, 16);
-            frame.setData(index, value);
-            cout << byte << " ";
-            index++;
+        case 1:
+            printAllFrames(frames);
+            break;
+
+        case 2:
+        {
+            uint32_t search_id;
+            cout << "Enter ID (Hex): ";
+            cin >> hex >> search_id;
+
+            cout << "Count : "
+                 << countFramesByID(frames, search_id)
+                 << endl;
+
+            printFramesByID(frames, search_id);
+            break;
         }
 
-        cout << "\n\n";
-        frames.push_back(frame);
-    }
+        case 3:
+        {
+            uint8_t search_dlc;
+            cout << "Enter DLC: ";
+            cin >> dec >> search_dlc;
 
-    uint32_t search_id;
-    cin >> hex >> search_id;
-    cout << "Search ID = " << search_id << '\n';
-    uint32_t count_id = countFramesByID(frames, search_id);
-    printFramesByID(frames, search_id);
-    cout << count_id << endl;
+            cout << "Count : "
+                 << countFramesByDLC(frames, search_dlc)
+                 << endl;
+            break;
+        }
 
-    uint8_t search_dlc;
-    cin >> dec >> search_dlc;
-    uint32_t count_dlc = countFramesByDLC(frames, search_dlc);
-    cout << count_dlc << endl;
+        case 4:
+            printIDStatistics(frames);
+            break;
 
-    printIDStatistics(frames);
-    printMostFrequentID(frames);
-    sortbyCount(frames);
+        case 5:
+            printMostFrequentID(frames);
+            break;
+
+        case 6:
+            sortbyCount(frames);
+            break;
+
+        case 7:
+            findDuplicateFrames(frames);
+            break;
+
+        case 8:
+        {
+            uint32_t searchByte;
+
+            cout << "Enter Data Byte (Hex): ";
+            cin >> hex >> searchByte;
+
+            searchByDataByte(frames,
+                             static_cast<uint8_t>(searchByte));
+            break;
+        }
+
+        case 9:
+        {
+            uint32_t startID, endID;
+
+            cout << "Start ID (Hex): ";
+            cin >> hex >> startID;
+
+            cout << "End ID (Hex): ";
+            cin >> hex >> endID;
+
+            searchByIDRange(frames, startID, endID);
+            break;
+        }
+
+        case 10:
+        {
+            uint8_t minDLC, maxDLC;
+
+            cout << "Minimum DLC: ";
+            cin >> dec >> minDLC;
+
+            cout << "Maximum DLC: ";
+            cin >> dec >> maxDLC;
+
+            searchByDLCRange(frames, minDLC, maxDLC);
+            break;
+        }
+
+        case 11:
+            sortFramesByID(frames);
+            printAllFrames(frames);
+            break;
+
+        case 12:
+            sortFramesByDLC(frames);
+            printAllFrames(frames);
+            break;
+
+        case 13:
+            printSummary(frames);
+            break;
+
+        case 14:
+            exportFrames(frames);
+            cout << "Frames exported successfully.\n";
+            break;
+
+        case 15:
+            cout << "Exiting AutoCAN Analyzer...\n";
+            break;
+
+        default:
+            cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 15);
+
+    return 0;
 }

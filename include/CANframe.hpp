@@ -21,7 +21,7 @@ public:
     uint32_t getID() const;
     uint8_t getDLC() const;
     uint8_t getData(uint8_t index) const;
-
+bool operator==(const CANFrame& other) const;
 };
 
 uint32_t countFramesByID(const std::vector<CANFrame> &frames, uint32_t search_id);
@@ -30,4 +30,15 @@ void printFramesByID(const vector<CANFrame> &frames, uint32_t search_id);
 void printIDStatistics(const vector<CANFrame> &frames);
 void printMostFrequentID(const vector<CANFrame>& frames);
 void sortbyCount(const vector<CANFrame> &frames);
+void findDuplicateFrames(const vector<CANFrame> &frames);
+void searchByDataByte(const vector<CANFrame> &frames, uint8_t searchByte);
+void searchByIDRange(const vector<CANFrame>& frames, uint32_t startID,uint32_t endID);
+void searchByDLCRange(const vector<CANFrame>& frames, uint8_t minDLC, uint8_t maxDLC);
+void sortFramesByID(vector<CANFrame> &frames);
+void printAllFrames(const vector<CANFrame>& frames);
+void sortFramesByDLC(vector<CANFrame> &frames);
+void printSummary(const vector<CANFrame>& frames);
+void exportFrames(const vector<CANFrame>& frames);
+void importFrames(vector<CANFrame>& frames);
+
 #endif
