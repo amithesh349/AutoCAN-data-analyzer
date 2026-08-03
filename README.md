@@ -17,4 +17,25 @@ This repository is also a record of my engineering journey. I am documenting the
 * Practice version control using Git and GitHub
 * Document engineering work in a professional manner
 
+* ## Features added
+
+- Import CAN frames from a log file
+- Export CAN frames to a text file
+- Print all CAN frames
+- Search frames by CAN ID
+- Search frames by DLC
+- Search frames by Data Byte
+- Search frames by CAN ID Range
+- Search frames by DLC Range
+- Count frames by CAN ID
+- Count frames by DLC
+- CAN ID Statistics
+- Find Most Frequent CAN ID
+- Sort frames by CAN ID
+- Sort frames by DLC
+- Sort CAN IDs by occurrence count
+- Detect duplicate CAN frames
+- Summary report
+- Menu-driven console interface
+
 I will continue updating this repository as the project evolves, adding new features, improvements, documentation, and testing results throughout the development process.
